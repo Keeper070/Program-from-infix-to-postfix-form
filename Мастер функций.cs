@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Text;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -6,6 +8,8 @@ namespace LR_1
 {
     public partial class Мастер_функций : Form
     {
+        private int _index;
+
         public Мастер_функций()
         {
             InitializeComponent();
@@ -261,20 +265,39 @@ namespace LR_1
             textBox1.Text += "<-";
         }
 
+        private new void ButtonArrows()
+        {
+           
+            textBox1.SelectionStart = _index + 1;
+            textBox1.Focus();
+            _index++;
+           
+        }
         private void button15_Click_1(object sender, EventArgs e)
         {
-            textBox1.Text += "<<-";
+            
+            
+            _index = _index >= 0 ? --_index : _index;
+            textBox1.SelectionStart = _index + 1;
+            textBox1.Focus();
         }
 
-
-        private void button17_Click(object sender, EventArgs e)
+            private void button17_Click(object sender, EventArgs e)
         {
-            textBox1.Text += "->";
+          
         }
 
         private void button18_Click(object sender, EventArgs e)
         {
-            textBox1.Text += "->>";
+            var result = new StringBuilder();
+            foreach (var s in textBox1.Text)
+            {
+                result.Append(s);
+            }
+
+            _index = _index < textBox1.Text.Length - 1 ? ++_index : _index;
+            textBox1.SelectionStart = _index + 1;
+            textBox1.Focus();
         }
 
         private void button20_Click(object sender, EventArgs e)
