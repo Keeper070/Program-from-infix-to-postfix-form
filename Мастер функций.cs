@@ -265,7 +265,8 @@ namespace LR_1
             textBox1.Text += "<-";
         }
 
-        private new void ButtonArrows()
+        #region Курсор по textBox
+        private void ButtonArrows()
         {
            
             textBox1.SelectionStart = _index + 1;
@@ -281,25 +282,18 @@ namespace LR_1
             textBox1.SelectionStart = _index + 1;
             textBox1.Focus();
         }
-
-            private void button17_Click(object sender, EventArgs e)
-        {
-          
-        }
-
         private void button18_Click(object sender, EventArgs e)
         {
-            var result = new StringBuilder();
-            foreach (var s in textBox1.Text)
-            {
-                result.Append(s);
-            }
-
             _index = _index < textBox1.Text.Length - 1 ? ++_index : _index;
             textBox1.SelectionStart = _index + 1;
             textBox1.Focus();
         }
-
+        #endregion
+        
+        private void button17_Click(object sender, EventArgs e)
+        {
+          
+        }
         private void button20_Click(object sender, EventArgs e)
         {
             Close();
