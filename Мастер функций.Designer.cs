@@ -538,7 +538,7 @@ namespace LR_1
             // 
             // button43
             // 
-            this.button43.Location = new System.Drawing.Point(725, 205);
+            this.button43.Location = new System.Drawing.Point(725, 201);
             this.button43.Name = "button43";
             this.button43.Size = new System.Drawing.Size(47, 40);
             this.button43.TabIndex = 43;
@@ -548,7 +548,7 @@ namespace LR_1
             // 
             // button44
             // 
-            this.button44.Location = new System.Drawing.Point(672, 205);
+            this.button44.Location = new System.Drawing.Point(672, 201);
             this.button44.Name = "button44";
             this.button44.Size = new System.Drawing.Size(47, 40);
             this.button44.TabIndex = 44;

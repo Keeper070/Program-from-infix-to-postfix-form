@@ -302,6 +302,7 @@ namespace LR_1
         private void button19_Click(object sender, EventArgs e)
         {
             textBox1.Clear();
+            
         }
 
         // Метод реализованнй для того, чтобы при повторном открытии мастера функций не стиралась старая форма 
