@@ -11,7 +11,7 @@ namespace LR_1
         public static string BufferTextForm1 { get; set; }
         public bool bol = false;
         string convertBuf = null;
-
+        public Dictionary<string, char> Letter1 = new Dictionary<string, char>();
         public Form1()
         {
             InitializeComponent();
@@ -45,7 +45,41 @@ namespace LR_1
 
         #endregion
 
+       
+        //Метод замены всех кнопок Мастера функций на буквы A-Ч
+        public  void Letter()
+        {
+            Letter1.Add("arcsin", 'а');
+            Letter1.Add("arccos", 'б');
+            Letter1.Add("sin", 'в');
+            Letter1.Add("cos", 'г');
+            Letter1.Add( "arcctg", 'д');
+            /*{ "sin", 'в' },
+            { "cos", 'г' },
+            { "arcctg", 'д' },
+            { "arctg", 'е' },
+            { "ctg", 'ж' },
+            { "tg", 'з' },
+            { "ln", 'и' },
+            { "arsh", 'к' },
+            { "arch", 'л' },
+            { "arth", 'м' },
+            { "arcth", 'н' },
+            { "sh", 'о' },
+            { "ch", 'п' },
+            { "cth", 'р' },
+            { "th", 'с' },
+            { "abs", 'т' },
+            { "exp", 'у' },
+            { "lg", 'ф' },
+            { "round", 'х' },
+            { "trunc", 'ц' },
+            { "fruc", 'ч' }*/
 
+        }
+
+
+        //Перевод из инфиксной в постфиксную форму
         private void TranslationInfPost()
         {
             String el = label1.Text;
@@ -61,6 +95,7 @@ namespace LR_1
                 else if (symb == '(')
                 {
                     stack.Push(symb);
+                    
                 }
                 else if (symb == ')')
                 {
@@ -68,13 +103,12 @@ namespace LR_1
                     {
                         var buff1 = stack.Pop();
                         queue.Enqueue(buff1);
-                        
-                        if (stack.Count == 0 || stack.Peek()=='(')
+
+                        if (stack.Count == 0 || stack.Peek() == '(')
                         {
                             stack.Pop();
                             break;
                         }
-                        
                     }
 
                     if (symb == '(')
@@ -84,7 +118,11 @@ namespace LR_1
                 }
                 else if (!Char.IsDigit(symb))
                 {
-                    if (stack.Count == 0 || stack.Peek() == '(')
+                    if (Letter1.ContainsKey(symb.ToString()))
+                    {
+                        /*Letter1.TryGetValue(symb.ToString(),symb)*/
+                    } 
+                    else  if (stack.Count == 0 || stack.Peek() == '(')
                     {
                         stack.Push(symb);
                     }
@@ -94,21 +132,17 @@ namespace LR_1
                     }
                     else if (symb == '+' || symb == '-')
                     {
-                       
-                            while (stack.Peek() != '('  || stack.Peek() != '+' || stack.Peek() != '-' )
+                        while (stack.Peek() != '(' || stack.Peek() != '+' || stack.Peek() != '-')
+                        {
+                            var buff = stack.Pop();
+                            queue.Enqueue(buff);
+                            if (stack.Count == 0)
                             {
-                               
-
-                                var buff = stack.Pop();
-                                queue.Enqueue(buff);
-                                if (stack.Count == 0  )
-                                {
-                                    break;
-                                }
-                                
-
+                                break;
                             }
-                            stack.Push(symb);
+                        }
+
+                        stack.Push(symb);
                     }
                 }
             }
@@ -130,16 +164,25 @@ namespace LR_1
             }
 
             textBox2.Text = convertBuf;
-            
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-            
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        //Вывод стека
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }
