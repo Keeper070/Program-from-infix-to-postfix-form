@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -11,7 +12,8 @@ namespace LR_1
         public static string BufferTextForm1 { get; set; }
         public bool bol = false;
         string convertBuf = null;
-        public Dictionary<string, char> Letter1 = new Dictionary<string, char>();
+        public Dictionary<char, StringBuilder> Dictionary = new Dictionary<char, StringBuilder>();
+
         public Form1()
         {
             InitializeComponent();
@@ -45,57 +47,93 @@ namespace LR_1
 
         #endregion
 
-       
+
         //Метод замены всех кнопок Мастера функций на буквы A-Ч
-        public  void Letter()
+        /*public void Letter()
         {
             Letter1.Add("arcsin", 'а');
             Letter1.Add("arccos", 'б');
             Letter1.Add("sin", 'в');
             Letter1.Add("cos", 'г');
-            Letter1.Add( "arcctg", 'д');
-            /*{ "sin", 'в' },
-            { "cos", 'г' },
-            { "arcctg", 'д' },
-            { "arctg", 'е' },
-            { "ctg", 'ж' },
-            { "tg", 'з' },
-            { "ln", 'и' },
-            { "arsh", 'к' },
-            { "arch", 'л' },
-            { "arth", 'м' },
-            { "arcth", 'н' },
-            { "sh", 'о' },
-            { "ch", 'п' },
-            { "cth", 'р' },
-            { "th", 'с' },
-            { "abs", 'т' },
-            { "exp", 'у' },
-            { "lg", 'ф' },
-            { "round", 'х' },
-            { "trunc", 'ц' },
-            { "fruc", 'ч' }*/
+            Letter1.Add("arcctg", 'д');
+            Letter1.Add("arctg", 'е');
+            Letter1.Add("ctg", 'ж');
+            Letter1.Add("tg", 'з');
+            Letter1.Add("ln", 'и');
+            Letter1.Add("arsh", 'к');
+            Letter1.Add("arch", 'л');
+            Letter1.Add("arth", 'м');
+            Letter1.Add("arcth", 'н');
+            Letter1.Add("sh", 'о');
+            Letter1.Add("ch", 'п');
+            Letter1.Add("cth", 'р');
+            Letter1.Add("th", 'с');
+            Letter1.Add("abs", 'т');
+            Letter1.Add("exp", 'у');
+            Letter1.Add("lg", 'ф');
+            Letter1.Add("round", 'х');
+            Letter1.Add("trunc", 'ц');
+            Letter1.Add("fruc", 'ч');
+        }*/
 
+        /*public void Unknown(string el, char symb, StringBuilder strBuff)
+        {
+            for (int i = symb; i < el.Length; i++)
+            {
+                if (symb != '(')
+                {
+                    strBuff.Append(symb);
+                }
+            }
+
+            var c = Letter1[strBuff.ToString()];
+            symb = c;
+        }*/
+
+        // Первеод функции в символ
+        private void TranslationOfFunctions(char symb, string el, StringBuilder stb)
+        {
+            char chDigit = 'A';
+            char chLetter = 'a';
+
+            for (int i = 0; i < el.Length; i++)
+            {
+                if (char.IsDigit(symb))
+                {
+                    Dictionary.Add(chDigit, stb.Append(symb));
+                    chDigit++;
+                }
+                else if (!char.IsDigit(symb) && symb != '(' && symb != ')' && symb != '+' && symb != '-' &&
+                         symb != '/' && symb != '^')
+                {
+                    // Dictionary.Add(chLetter,);
+                    chLetter++;
+                }
+            }
         }
+        
+        
 
 
         //Перевод из инфиксной в постфиксную форму
         private void TranslationInfPost()
         {
-            String el = label1.Text;
+            string el = label1.Text;
+            StringBuilder str = new StringBuilder();
             Stack<char> stack = new Stack<char>();
             Queue<char> queue = new Queue<char>();
             
             foreach (char symb in el)
             {
-                if (Char.IsDigit(symb))
+                TranslationOfFunctions(symb, el, str);
+                
+                if (Char.IsUpper(symb))
                 {
                     queue.Enqueue(symb);
                 }
                 else if (symb == '(')
                 {
                     stack.Push(symb);
-                    
                 }
                 else if (symb == ')')
                 {
@@ -111,18 +149,14 @@ namespace LR_1
                         }
                     }
 
-                    if (symb == '(')
+                    if (symb == '(') // зайдем ли мы сюда хоть раз? Объяснить почему
                     {
                         stack.Pop();
                     }
                 }
-                else if (!Char.IsDigit(symb))
+                else if (!char.IsUpper(symb))
                 {
-                    if (Letter1.ContainsKey(symb.ToString()))
-                    {
-                        /*Letter1.TryGetValue(symb.ToString(),symb)*/
-                    } 
-                    else  if (stack.Count == 0 || stack.Peek() == '(')
+                    if (stack.Count == 0 || stack.Peek() == '(')
                     {
                         stack.Push(symb);
                     }
@@ -176,13 +210,11 @@ namespace LR_1
 
         private void label5_Click(object sender, EventArgs e)
         {
-            
         }
-
+        
         //Вывод стека
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            
         }
     }
 }

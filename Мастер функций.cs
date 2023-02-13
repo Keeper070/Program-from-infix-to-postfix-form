@@ -262,7 +262,9 @@ namespace LR_1
 
         private void button16_Click(object sender, EventArgs e)
         {
-            textBox1.Text += "<-";
+            _index = _index >= 0 ? --_index : _index;
+            textBox1.SelectionStart = _index + 1;
+            textBox1.Focus();
         }
 
         #region Курсор по textBox
@@ -274,26 +276,26 @@ namespace LR_1
             _index++;
            
         }
-        private void button15_Click_1(object sender, EventArgs e)
-        {
-            
-            
-            _index = _index >= 0 ? --_index : _index;
-            textBox1.SelectionStart = _index + 1;
-            textBox1.Focus();
-        }
-        private void button18_Click(object sender, EventArgs e)
+        private void button17_Click(object sender, EventArgs e)
         {
             _index = _index < textBox1.Text.Length - 1 ? ++_index : _index;
             textBox1.SelectionStart = _index + 1;
             textBox1.Focus();
+          
+        }
+        private void button15_Click_1(object sender, EventArgs e)
+        {
+            textBox1.SelectionStart = 0;
+            textBox1.Focus();
+        }
+        private void button18_Click(object sender, EventArgs e)
+        {
+            textBox1.SelectionStart = textBox1.Text.Length;
+            textBox1.Focus();
         }
         #endregion
         
-        private void button17_Click(object sender, EventArgs e)
-        {
-          
-        }
+     
         private void button20_Click(object sender, EventArgs e)
         {
             Close();
