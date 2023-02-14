@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Timers;
 using System.Windows.Forms;
@@ -12,7 +13,7 @@ namespace LR_1
         public static string BufferTextForm1 { get; set; }
         public bool bol = false;
         string convertBuf = null;
-        public Dictionary<char, StringBuilder> Dictionary = new Dictionary<char, StringBuilder>();
+        public Dictionary<char, string> dictionary = new Dictionary<char, string>();
 
         public Form1()
         {
@@ -76,45 +77,64 @@ namespace LR_1
             Letter1.Add("fruc", 'ч');
         }*/
 
-        
-
-        // Первеод функции в символ
-        private void TranslationOfFunctions(char symb, string el, StringBuilder stb)
+        // Первеод функции и цифры  в символ
+        private void TranslationOfFunctions(string textbox, StringBuilder strb)
         {
             char chDigit = 'A';
-            char chLetter = 'a';
+            char chLetter = 'а';
 
-            for (int i = 0; i < el.Length; i++)
+            for (int i = 0; i < textbox.Length; i++)
             {
-                if (char.IsDigit(symb))
+                # region Цифра
+                while (char.IsDigit(textbox[i]))
                 {
-                    Dictionary.Add(chDigit, stb.Append(symb));
+                    strb.Append(textbox[i]);
+                    dictionary.Add(chDigit, strb.ToString());
+                    break;
+                }
+
+                if (char.IsDigit(textbox[i]))
+                {
+                    strb.Clear();
                     chDigit++;
                 }
-                else if (!char.IsDigit(symb) && symb != '(' && symb != ')' && symb != '+' && symb != '-' &&
-                         symb != '/' && symb != '^')
+                #endregion
+                
+                # region Функция 
+                while (!char.IsDigit(textbox[i]) && textbox[i] != '(' && textbox[i] != '-' && textbox[i] != '+' &&
+                       textbox[i] != '/' && textbox[i] != '^' && textbox[i] != ')')
                 {
-                    // Dictionary.Add(chLetter,);
+                    strb.Append(textbox[i]);
+                    dictionary.Add(chLetter, strb.ToString());
+                    break;
+                }
+
+                if (!char.IsDigit(textbox[i]) && textbox[i] != '(' && textbox[i] != '-' && textbox[i] != '+' &&
+                    textbox[i] != '/' && textbox[i] != '^' && textbox[i] != ')')
+                {
+                    strb.Clear();
                     chLetter++;
                 }
+                #endregion
+                
+                
             }
-        }
-        
-        
 
+           
+        }
 
         //Перевод из инфиксной в постфиксную форму
         private void TranslationInfPost()
         {
-            string el = label1.Text;
+            string textbox = label1.Text;
             StringBuilder str = new StringBuilder();
             Stack<char> stack = new Stack<char>();
             Queue<char> queue = new Queue<char>();
             
-            foreach (char symb in el)
+            TranslationOfFunctions(textbox, str);
+           
+            foreach (char symb in textbox)
             {
-                TranslationOfFunctions(symb, el, str);
-                
                 if (Char.IsUpper(symb))
                 {
                     queue.Enqueue(symb);
@@ -199,7 +219,7 @@ namespace LR_1
         private void label5_Click(object sender, EventArgs e)
         {
         }
-        
+
         //Вывод стека
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
