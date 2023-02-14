@@ -76,19 +76,7 @@ namespace LR_1
             Letter1.Add("fruc", 'ч');
         }*/
 
-        /*public void Unknown(string el, char symb, StringBuilder strBuff)
-        {
-            for (int i = symb; i < el.Length; i++)
-            {
-                if (symb != '(')
-                {
-                    strBuff.Append(symb);
-                }
-            }
-
-            var c = Letter1[strBuff.ToString()];
-            symb = c;
-        }*/
+        
 
         // Первеод функции в символ
         private void TranslationOfFunctions(char symb, string el, StringBuilder stb)
