@@ -13,11 +13,27 @@ namespace LR_1
         public static string BufferTextForm1 { get; set; }
         public bool bol = false;
         string convertBuf = null;
-        public Dictionary<char, string> dictionary = new Dictionary<char, string>();
+        private readonly Dictionary<char, string> _dictionaryFunction = new Dictionary<char, string>();
+        public Dictionary<char, string> dictionaryDigit = new Dictionary<char, string>();
 
         public Form1()
         {
             InitializeComponent();
+            Init();
+        }
+
+        private void Init()
+        {
+            _dictionaryFunction.Add('а', "sin");
+            _dictionaryFunction.Add('б', "cos");
+            _dictionaryFunction.Add('в', "arcsin");
+            _dictionaryFunction.Add('г', "arccos");
+            _dictionaryFunction.Add('д', "^");
+            // dictionaryDigit.Add('a', "sin");   
+            // dictionaryDigit.Add('a', "sin");   
+            // dictionaryDigit.Add('a', "sin");   
+            // dictionaryDigit.Add('a', "sin");   
+            // dictionaryDigit.Add('a', "sin");   
         }
 
 
@@ -26,7 +42,7 @@ namespace LR_1
             bol = true;
             if (bol)
             {
-                TranslationInfPost();
+                 TranslationInfPost(label1.Text);
             }
         }
 
@@ -48,91 +64,76 @@ namespace LR_1
 
         #endregion
 
-
-        //Метод замены всех кнопок Мастера функций на буквы A-Ч
-        /*public void Letter()
+        // Перевод функций и цифр  в символ
+        private string TranslationOfFunctions(string str)
         {
-            Letter1.Add("arcsin", 'а');
-            Letter1.Add("arccos", 'б');
-            Letter1.Add("sin", 'в');
-            Letter1.Add("cos", 'г');
-            Letter1.Add("arcctg", 'д');
-            Letter1.Add("arctg", 'е');
-            Letter1.Add("ctg", 'ж');
-            Letter1.Add("tg", 'з');
-            Letter1.Add("ln", 'и');
-            Letter1.Add("arsh", 'к');
-            Letter1.Add("arch", 'л');
-            Letter1.Add("arth", 'м');
-            Letter1.Add("arcth", 'н');
-            Letter1.Add("sh", 'о');
-            Letter1.Add("ch", 'п');
-            Letter1.Add("cth", 'р');
-            Letter1.Add("th", 'с');
-            Letter1.Add("abs", 'т');
-            Letter1.Add("exp", 'у');
-            Letter1.Add("lg", 'ф');
-            Letter1.Add("round", 'х');
-            Letter1.Add("trunc", 'ц');
-            Letter1.Add("fruc", 'ч');
-        }*/
+            char charDigit = 'A';
+            StringBuilder list = new StringBuilder();
+            StringBuilder outStr = new StringBuilder();
 
-        // Первеод функции и цифры  в символ
-        private void TranslationOfFunctions(string textbox, StringBuilder strb)
-        {
-            char chDigit = 'A';
-            char chLetter = 'а';
-
-            for (int i = 0; i < textbox.Length; i++)
+            var i = 0;
+            while (i < str.Length)
             {
-                # region Цифра
-                while (char.IsDigit(textbox[i]))
+                if (char.IsDigit(str[i]))
                 {
-                    strb.Append(textbox[i]);
-                    dictionary.Add(chDigit, strb.ToString());
-                    break;
+                    // Цикл для добавления цифры в список 
+                    while (char.IsDigit(str[i]))
+                    {
+                        list.Append(str[i]);
+                        if (i + 1 >= str.Length && char.IsDigit(str[i + 1]))
+                            break;
+                        i++;
+                    }
+                    
+                    dictionaryDigit.Add(charDigit, list.ToString());
+                    list.Clear();
+                    outStr.Append(charDigit);
+                    charDigit++;
                 }
-
-                if (char.IsDigit(textbox[i]))
+                else if (char.IsLetter(str[i]))
                 {
-                    strb.Clear();
-                    chDigit++;
+                    //Цикл для добавления функции в список 
+                    while (char.IsLetter(str[i]))
+                    {
+                        list.Append(str[i]);
+                        if (i + 1 >= str.Length && char.IsLetter(str[i + 1]))
+                            break;
+                        i++;
+                    }
+                    
+                    //Для добавления функции в выходной список 
+                    for (int j = 0; j < _dictionaryFunction.Count; j++)
+                    {
+                        if (list.ToString() == _dictionaryFunction.Values.ElementAt(j))
+                        {
+                            outStr.Append(_dictionaryFunction.Keys.ElementAt(j));
+                            list.Clear();
+                            break;
+                        }
+                    }
                 }
-                #endregion
-                
-                # region Функция 
-                while (!char.IsDigit(textbox[i]) && textbox[i] != '(' && textbox[i] != '-' && textbox[i] != '+' &&
-                       textbox[i] != '/' && textbox[i] != '^' && textbox[i] != ')')
+                // Для добавления символов в выходной список 
+                else if (str[i] == '(' || str[i] == '+' || str[i] == '-' || str[i] == ')' || str[i] == '/')
                 {
-                    strb.Append(textbox[i]);
-                    dictionary.Add(chLetter, strb.ToString());
-                    break;
+                    outStr.Append(str[i]);
+                    i++;
                 }
-
-                if (!char.IsDigit(textbox[i]) && textbox[i] != '(' && textbox[i] != '-' && textbox[i] != '+' &&
-                    textbox[i] != '/' && textbox[i] != '^' && textbox[i] != ')')
-                {
-                    strb.Clear();
-                    chLetter++;
-                }
-                #endregion
-                
-                
             }
 
-           
+            return outStr.ToString();
         }
 
         //Перевод из инфиксной в постфиксную форму
-        private void TranslationInfPost()
+        public string TranslationInfPost(string textbox)
         {
-            string textbox = label1.Text;
+            // string textbox = "sin(2+3)-(9+3)";
             StringBuilder str = new StringBuilder();
             Stack<char> stack = new Stack<char>();
             Queue<char> queue = new Queue<char>();
+
+           textbox =TranslationOfFunctions(textbox);
             
-            TranslationOfFunctions(textbox, str);
-           
+
             foreach (char symb in textbox)
             {
                 if (Char.IsUpper(symb))
@@ -142,6 +143,8 @@ namespace LR_1
                 else if (symb == '(')
                 {
                     stack.Push(symb);
+                    textBox1.Text = stack.ToString();
+
                 }
                 else if (symb == ')')
                 {
@@ -206,6 +209,8 @@ namespace LR_1
             }
 
             textBox2.Text = convertBuf;
+            
+            return queue.ToString();
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
