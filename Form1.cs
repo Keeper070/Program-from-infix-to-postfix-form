@@ -39,11 +39,8 @@ namespace LR_1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            bol = true;
-            if (bol)
-            {
-                 TranslationInfPost(label1.Text);
-            }
+            /*TranslationInfPost(label1.Text);*/
+            Translation(label1.Text);
         }
 
         #region Кнопка инфиксной формы
@@ -80,11 +77,15 @@ namespace LR_1
                     while (char.IsDigit(str[i]))
                     {
                         list.Append(str[i]);
-                        if (i + 1 >= str.Length && char.IsDigit(str[i + 1]))
+                        if (i + 1 >= str.Length || !char.IsDigit(str[i + 1]))
+                        {
+                            i++;
                             break;
+                        }
+
                         i++;
                     }
-                    
+
                     dictionaryDigit.Add(charDigit, list.ToString());
                     list.Clear();
                     outStr.Append(charDigit);
@@ -100,7 +101,7 @@ namespace LR_1
                             break;
                         i++;
                     }
-                    
+
                     //Для добавления функции в выходной список 
                     for (int j = 0; j < _dictionaryFunction.Count; j++)
                     {
@@ -113,7 +114,8 @@ namespace LR_1
                     }
                 }
                 // Для добавления символов в выходной список 
-                else if (str[i] == '(' || str[i] == '+' || str[i] == '-' || str[i] == ')' || str[i] == '/')
+                else if (str[i] == '(' || str[i] == '+' || str[i] == '-' || str[i] == ')' || str[i] == '/' ||
+                         str[i] == '*' || str[i] == '^')
                 {
                     outStr.Append(str[i]);
                     i++;
@@ -124,46 +126,35 @@ namespace LR_1
         }
 
         //Перевод из инфиксной в постфиксную форму
-        public string TranslationInfPost(string textbox)
+        public string Translation(string texbox)
         {
-            // string textbox = "sin(2+3)-(9+3)";
             StringBuilder str = new StringBuilder();
             Stack<char> stack = new Stack<char>();
             Queue<char> queue = new Queue<char>();
 
-           textbox =TranslationOfFunctions(textbox);
-            
-
-            foreach (char symb in textbox)
+            texbox = TranslationOfFunctions(texbox);
+            foreach (var symb in texbox)
             {
-                if (Char.IsUpper(symb))
-                {
-                    queue.Enqueue(symb);
-                }
-                else if (symb == '(')
+                if (symb == '(')
                 {
                     stack.Push(symb);
-                    textBox1.Text = stack.ToString();
-
                 }
                 else if (symb == ')')
                 {
                     while (stack.Peek() != '(')
                     {
-                        var buff1 = stack.Pop();
-                        queue.Enqueue(buff1);
-
-                        if (stack.Count == 0 || stack.Peek() == '(')
-                        {
-                            stack.Pop();
-                            break;
-                        }
+                        var buff = stack.Pop();
+                        queue.Enqueue(buff);
                     }
 
-                    if (symb == '(') // зайдем ли мы сюда хоть раз? Объяснить почему
+                    if (stack.Peek() == '(')
                     {
                         stack.Pop();
                     }
+                }
+                else if (char.IsUpper(symb))
+                {
+                    queue.Enqueue(symb);
                 }
                 else if (!char.IsUpper(symb))
                 {
@@ -177,11 +168,11 @@ namespace LR_1
                     }
                     else if (symb == '+' || symb == '-')
                     {
-                        while (stack.Peek() != '(' || stack.Peek() != '+' || stack.Peek() != '-')
+                        while (stack.Peek() != '(' )
                         {
                             var buff = stack.Pop();
                             queue.Enqueue(buff);
-                            if (stack.Count == 0)
+                            if (stack.Count == 0 )
                             {
                                 break;
                             }
@@ -209,8 +200,8 @@ namespace LR_1
             }
 
             textBox2.Text = convertBuf;
-            
-            return queue.ToString();
+
+            return convertBuf;
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
