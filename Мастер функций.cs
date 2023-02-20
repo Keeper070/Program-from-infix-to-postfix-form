@@ -298,7 +298,8 @@ namespace LR_1
      
         private void button20_Click(object sender, EventArgs e)
         {
-            Close();
+           
+           textBox1.Text= textBox1.Text.Substring(0, textBox1.Text.Length - 1); 
         }
 
         private void button19_Click(object sender, EventArgs e)
@@ -317,5 +318,18 @@ namespace LR_1
         }
 
         #endregion
+        // Кнопка принять
+        private void button52_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        //Кнопка отклонить
+        private void button53_Click(object sender, EventArgs e)
+        {
+           
+            textBox1.Clear();
+            Close();
+        }
     }
 }

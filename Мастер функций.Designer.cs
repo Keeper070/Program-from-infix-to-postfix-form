@@ -87,6 +87,8 @@ namespace LR_1
             this.button50 = new System.Windows.Forms.Button();
             this.button51 = new System.Windows.Forms.Button();
             this.timer1 = new System.Timers.Timer();
+            this.button52 = new System.Windows.Forms.Button();
+            this.button53 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.timer1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -632,11 +634,33 @@ namespace LR_1
             this.timer1.SynchronizingObject = this;
             this.timer1.Elapsed += new System.Timers.ElapsedEventHandler(this.timer1_Elapsed);
             // 
+            // button52
+            // 
+            this.button52.Location = new System.Drawing.Point(629, 407);
+            this.button52.Name = "button52";
+            this.button52.Size = new System.Drawing.Size(123, 31);
+            this.button52.TabIndex = 52;
+            this.button52.Text = "Принять";
+            this.button52.UseVisualStyleBackColor = true;
+            this.button52.Click += new System.EventHandler(this.button52_Click);
+            // 
+            // button53
+            // 
+            this.button53.Location = new System.Drawing.Point(778, 407);
+            this.button53.Name = "button53";
+            this.button53.Size = new System.Drawing.Size(123, 31);
+            this.button53.TabIndex = 53;
+            this.button53.Text = "Отклонить";
+            this.button53.UseVisualStyleBackColor = true;
+            this.button53.Click += new System.EventHandler(this.button53_Click);
+            // 
             // Мастер_функций
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(941, 450);
+            this.Controls.Add(this.button53);
+            this.Controls.Add(this.button52);
             this.Controls.Add(this.button51);
             this.Controls.Add(this.button50);
             this.Controls.Add(this.button49);
@@ -697,6 +721,9 @@ namespace LR_1
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.Button button52;
+        private System.Windows.Forms.Button button53;
 
         private System.Timers.Timer timer1;
 

@@ -22,18 +22,32 @@ namespace LR_1
             Init();
         }
 
+        //Словарь для функций
         private void Init()
         {
             _dictionaryFunction.Add('а', "sin");
             _dictionaryFunction.Add('б', "cos");
             _dictionaryFunction.Add('в', "arcsin");
             _dictionaryFunction.Add('г', "arccos");
-            _dictionaryFunction.Add('д', "^");
-            // dictionaryDigit.Add('a', "sin");   
-            // dictionaryDigit.Add('a', "sin");   
-            // dictionaryDigit.Add('a', "sin");   
-            // dictionaryDigit.Add('a', "sin");   
-            // dictionaryDigit.Add('a', "sin");   
+            _dictionaryFunction.Add('д', "arcctg");
+            _dictionaryFunction.Add('е', "arctg");
+            _dictionaryFunction.Add('ж', "ctg");
+            _dictionaryFunction.Add('з', "tg");
+            _dictionaryFunction.Add('и', "ln");
+            _dictionaryFunction.Add('к', "arsh");
+            _dictionaryFunction.Add('л' , "arch");
+            _dictionaryFunction.Add('м' , "arth");
+            _dictionaryFunction.Add('н' , "arcth");
+            _dictionaryFunction.Add('о' , "sh");
+            _dictionaryFunction.Add('п' , "ch");
+            _dictionaryFunction.Add('р',"cth");
+            _dictionaryFunction.Add('c' , "th");
+            _dictionaryFunction.Add('т', "abs");
+            _dictionaryFunction.Add('у', "exp");
+            _dictionaryFunction.Add('ф', "lg");
+            _dictionaryFunction.Add('х', "round");
+            _dictionaryFunction.Add('ц', "trunc");
+            _dictionaryFunction.Add('ч', "fruc");
         }
 
 
@@ -168,11 +182,11 @@ namespace LR_1
                     }
                     else if (symb == '+' || symb == '-')
                     {
-                        while (stack.Peek() != '(' )
+                        while (stack.Peek() != '(')
                         {
                             var buff = stack.Pop();
                             queue.Enqueue(buff);
-                            if (stack.Count == 0 )
+                            if (stack.Count == 0)
                             {
                                 break;
                             }
@@ -215,8 +229,7 @@ namespace LR_1
         private void label5_Click(object sender, EventArgs e)
         {
         }
-
-        //Вывод стека
+        
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
         }
