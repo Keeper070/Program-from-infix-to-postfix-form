@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -15,6 +16,7 @@ namespace LR_1
         string convertBuf = null;
         private readonly Dictionary<char, string> _dictionaryFunction = new Dictionary<char, string>();
         public Dictionary<char, string> dictionaryDigit = new Dictionary<char, string>();
+
 
         public Form1()
         {
@@ -35,13 +37,13 @@ namespace LR_1
             _dictionaryFunction.Add('з', "tg");
             _dictionaryFunction.Add('и', "ln");
             _dictionaryFunction.Add('к', "arsh");
-            _dictionaryFunction.Add('л' , "arch");
-            _dictionaryFunction.Add('м' , "arth");
-            _dictionaryFunction.Add('н' , "arcth");
-            _dictionaryFunction.Add('о' , "sh");
-            _dictionaryFunction.Add('п' , "ch");
-            _dictionaryFunction.Add('р',"cth");
-            _dictionaryFunction.Add('c' , "th");
+            _dictionaryFunction.Add('л', "arch");
+            _dictionaryFunction.Add('м', "arth");
+            _dictionaryFunction.Add('н', "arcth");
+            _dictionaryFunction.Add('о', "sh");
+            _dictionaryFunction.Add('п', "ch");
+            _dictionaryFunction.Add('р', "cth");
+            _dictionaryFunction.Add('c', "th");
             _dictionaryFunction.Add('т', "abs");
             _dictionaryFunction.Add('у', "exp");
             _dictionaryFunction.Add('ф', "lg");
@@ -53,7 +55,6 @@ namespace LR_1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            /*TranslationInfPost(label1.Text);*/
             Translation(label1.Text);
         }
 
@@ -74,6 +75,25 @@ namespace LR_1
         }
 
         #endregion
+
+        // Перебор очереди 
+        private void EnumerationQueue(Queue<char> queue)
+        {
+            foreach (var q in queue)
+            {
+                convertBuf += q;
+            }
+
+            textBox2.Text = convertBuf;
+        }
+
+        //Удаляем из textbox удаленный элемент из стека
+        private void StackDelete(Stack<char> stack)
+        {
+            var buffText=  textBox1.Text.Remove(textBox1.Text.Length-1, 1);
+            textBox1.Clear();
+            textBox1.AppendText(buffText);
+        }
 
         // Перевод функций и цифр  в символ
         private string TranslationOfFunctions(string str)
@@ -152,18 +172,25 @@ namespace LR_1
                 if (symb == '(')
                 {
                     stack.Push(symb);
+                    //Добавляем элемент стека в textbox1
+                    textBox1.AppendText(stack.Peek().ToString());
                 }
                 else if (symb == ')')
                 {
                     while (stack.Peek() != '(')
                     {
                         var buff = stack.Pop();
+                        //Метод удаления стека из текст бокса
+                        StackDelete(stack);
                         queue.Enqueue(buff);
+                        
                     }
 
                     if (stack.Peek() == '(')
                     {
                         stack.Pop();
+                        //Метод удаления стека из текст бокса
+                        StackDelete(stack);
                     }
                 }
                 else if (char.IsUpper(symb))
@@ -175,16 +202,22 @@ namespace LR_1
                     if (stack.Count == 0 || stack.Peek() == '(')
                     {
                         stack.Push(symb);
+                        //Добавляем элемент стека в textbox1
+                        textBox1.AppendText(stack.Peek().ToString());
                     }
                     else if (symb == '*' || symb == '/')
                     {
                         stack.Push(symb);
+                        //Добавляем элемент стека в textbox1
+                        textBox1.AppendText(stack.Peek().ToString());
                     }
                     else if (symb == '+' || symb == '-')
                     {
                         while (stack.Peek() != '(')
                         {
                             var buff = stack.Pop();
+                            //Метод удаления стека из текст бокса
+                            StackDelete(stack);
                             queue.Enqueue(buff);
                             if (stack.Count == 0)
                             {
@@ -193,6 +226,8 @@ namespace LR_1
                         }
 
                         stack.Push(symb);
+                        //Добавляем элемент стека в textbox1
+                        textBox1.AppendText(stack.Peek().ToString());
                     }
                 }
             }
@@ -200,21 +235,17 @@ namespace LR_1
             while (stack.Count != 0)
             {
                 var buff2 = stack.Pop();
+                //Удаляем из textbox удаленный элемент из стека
+                textBox1.Text.Remove(textBox1.Text.Length - 1, 1);
                 queue.Enqueue(buff2);
-
                 if (stack.Count == 0)
                 {
                     break;
                 }
             }
 
-            foreach (var q in queue)
-            {
-                convertBuf += q;
-            }
 
-            textBox2.Text = convertBuf;
-
+            EnumerationQueue(queue);
             return convertBuf;
         }
 
@@ -229,9 +260,47 @@ namespace LR_1
         private void label5_Click(object sender, EventArgs e)
         {
         }
-        
+
+        private bool bolStop = false;
+
+        //Стоп
+        private void button3_Click(object sender, EventArgs e)
+        {
+            bolStop = true;
+        }
+
+        private bool bolPause = false;
+
+        //Пауза
+        private void button4_Click(object sender, EventArgs e)
+        {
+            bolPause = true;
+        }
+
+        //Старт
+        private void button2_Click(object sender, EventArgs e)
+        {
+            while (bol)
+            {
+                new Thread(() => { Translation(label1.Text); });
+                Translation(label1.Text);
+                if(bolStop)
+                    break;
+            }
+           
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            bol = true;
+        }
+
+
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
+            
         }
+
+      
     }
 }
