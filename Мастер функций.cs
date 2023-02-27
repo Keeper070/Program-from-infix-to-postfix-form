@@ -322,6 +322,8 @@ namespace LR_1
         // Кнопка принять
         private void button52_Click(object sender, EventArgs e)
         {
+            if (controllerErrors())
+                return;
             Close();
         }
 
@@ -331,5 +333,46 @@ namespace LR_1
             textBox1.Clear();
             Close();
         }
+
+        //Обрабатываемые ошибки
+        private bool controllerErrors()
+        {
+            for (var index = 0; index < textBox1.Text.Length - 1; index++)
+            {
+                var first = textBox1.Text[index];
+                var second = textBox1.Text[index + 1];
+
+                if (first == '(' && second == ')')
+                {
+                    MessageBox.Show(@"В скобках ничего не указано!", @"Ошибка!", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return true;
+                }
+
+                if (char.IsDigit(first) && second == '(')
+                {
+                    MessageBox.Show(@"Между переменной " + first + @" и скобкой отсутствует знак!", @"Ошибка!",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return true;
+                }
+
+                if (first == '+' || first == '-' || first == '*' || first == '/' && second == '+' || second == '-' ||
+                    second == '*' || second == '/')
+                {
+                    MessageBox.Show(@"Операторы:" + first + second + @" идут подряд!", @"Ошибка!",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return true;
+                }
+                if (second == textBox1.Text[textBox1.Text.Length-1])
+                {
+                    MessageBox.Show(@"Оператор:" + second + @" идет последний!", @"Ошибка!",
+                        MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
+

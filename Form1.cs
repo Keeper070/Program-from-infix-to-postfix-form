@@ -18,7 +18,14 @@ namespace LR_1
         public Dictionary<char, string> dictionaryDigit = new Dictionary<char, string>();
         private bool _automatic = false;
         private bool _takt = false;
-
+     
+        //для такта
+        public int intBuf=0;
+        private string textboxBuff;
+        private Queue<char> queueBuff;
+        private Stack<char> stackBuff;
+        //
+        
         public Form1()
         {
             InitializeComponent();
@@ -90,6 +97,7 @@ namespace LR_1
             return convertBuf;
         }
 
+        //Перебор и вывод стека
         private void EnumerationStack(Stack<char> stack)
         {
             textBox1.Text = "";
@@ -98,17 +106,7 @@ namespace LR_1
                 textBox1.Text += s + @"
  ";
             }
-            // textBox1.Text = convertBuf;
         }
-
-        //Удаляем из textbox удаленный элемент из стека
-        private void StackDelete(Stack<char> stack)
-        {
-            var buffText = textBox1.Text.Remove(textBox1.Text.Length - 1, 1);
-            textBox1.Clear();
-            textBox1.AppendText(buffText);
-        }
-
 
         // Перевод функций и цифр  в символ
         private string TranslationOfFunctions(string str)
@@ -173,20 +171,33 @@ namespace LR_1
 
             return outStr.ToString();
         }
-        
-        char symbBuf;
+
+        private TextBox texbox2Buff;
+        private TextBox texbox1Buff;
         //Перевод из инфиксной в постфиксную форму
         public async Task<string> Translation(string texbox)
         {
             StringBuilder str = new StringBuilder();
             Stack<char> stack = new Stack<char>();
             Queue<char> queue = new Queue<char>();
+            
+            if (intBuf == 0)
+            {
+                texbox = TranslationOfFunctions(texbox);
+                textboxBuff = texbox;
+            }
+            else
+            {
+                texbox = textboxBuff;
+                textBox2 = texbox2Buff;
+                textBox1 = texbox1Buff;
 
-            texbox = TranslationOfFunctions(texbox);
+            }
+            
             label7.Text = texbox;
             await Task.Delay(1000);
-
-            for (var index = 0; index < texbox.Length; index++)
+            
+            for (var index = intBuf; index < texbox.Length; index++)
             {
                 var symb = texbox[index];
                 if (symb == '(')
@@ -245,7 +256,11 @@ namespace LR_1
                 EnumerationQueue(queue);
                 EnumerationStack(stack);
                 await Task.Delay(1000);
-
+                if (_takt)
+                {
+                    intBuf++;
+                    break;
+                }
             }
 
             while (stack.Count != 0)
@@ -260,6 +275,8 @@ namespace LR_1
                 }
             }
 
+            texbox2Buff = textBox2;
+            texbox1Buff = textBox1;
             //Для вывода букв в постфиксный текст бокс
             var convertbuf = EnumerationQueue(queue);
 
@@ -282,12 +299,14 @@ namespace LR_1
         //Стоп
         private void button3_Click(object sender, EventArgs e)
         {
+            Application.Exit();
         }
 
 
-        //Пауза
-        private void button4_Click(object sender, EventArgs e)
+        //Такт
+        private async void button4_Click(object sender, EventArgs e)
         {
+            await Translation("2+(3*(4+5)");
         }
 
         //Старт
@@ -295,11 +314,11 @@ namespace LR_1
         {
             if (_automatic)
             {
-                await Translation(label1.Text);
+                await Translation("2+(3*(4+5)");
             }
             else if (_takt)
             {
-                await Translation(label1.Text);
+                await Translation("2+(3*(4+5)");
             }
         }
 
@@ -336,7 +355,6 @@ namespace LR_1
         {
             label1.Text = "";
             label7.Text = "";
-            label8.Text = "";
             textBox2.Clear();
             textBox1.Clear();
         }

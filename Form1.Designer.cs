@@ -45,8 +45,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.timer1)).BeginInit();
             this.SuspendLayout();
@@ -77,7 +75,7 @@
             // textBox2
             // 
             this.textBox2.BackColor = System.Drawing.SystemColors.Window;
-            this.textBox2.Location = new System.Drawing.Point(116, 265);
+            this.textBox2.Location = new System.Drawing.Point(114, 232);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(287, 20);
@@ -104,7 +102,7 @@
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(116, 240);
+            this.label3.Location = new System.Drawing.Point(114, 207);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(300, 22);
             this.label3.TabIndex = 6;
@@ -212,30 +210,10 @@
             this.label7.TabIndex = 20;
             this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
-            // label9
-            // 
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label9.Location = new System.Drawing.Point(106, 182);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(310, 22);
-            this.label9.TabIndex = 21;
-            this.label9.Text = "Входная строка цифр( в постфиксной форме)";
-            // 
-            // label8
-            // 
-            this.label8.BackColor = System.Drawing.SystemColors.Window;
-            this.label8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label8.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.label8.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.label8.Location = new System.Drawing.Point(116, 204);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(287, 23);
-            this.label8.TabIndex = 22;
-            // 
             // button5
             // 
             this.button5.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button5.Location = new System.Drawing.Point(144, 129);
+            this.button5.Location = new System.Drawing.Point(134, 129);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(242, 26);
             this.button5.TabIndex = 23;
@@ -250,8 +228,6 @@
             this.BackColor = System.Drawing.SystemColors.Info;
             this.ClientSize = new System.Drawing.Size(1031, 560);
             this.Controls.Add(this.button5);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.label9);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -276,9 +252,6 @@
         }
 
         private System.Windows.Forms.Button button5;
-
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
 
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
