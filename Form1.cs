@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace LR_1
 {
@@ -13,10 +14,13 @@ namespace LR_1
     {
         public static string BufferTextForm1 { get; set; }
         public bool bol = false;
-        string convertBuf = null;
+
         private readonly Dictionary<char, string> _dictionaryFunction = new Dictionary<char, string>();
         public Dictionary<char, string> dictionaryDigit = new Dictionary<char, string>();
-
+        private bool _automatic = false;
+        private bool _takt = false;
+        public HorizontalAlignment TextAlign { get; set; }
+        public VerticalAlignment TextVerticalAlignment { get; set; }
 
         public Form1()
         {
@@ -55,7 +59,8 @@ namespace LR_1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Translation(label1.Text);
+            Мастер_функций f2 = new Мастер_функций();
+            f2.Show();
         }
 
         #region Кнопка инфиксной формы
@@ -63,8 +68,7 @@ namespace LR_1
         //Для запуска формы 2 
         private void label1_Click(object sender, EventArgs e)
         {
-            Мастер_функций f2 = new Мастер_функций();
-            f2.Show();
+            label1.Text = Мастер_функций.BufferText;
         }
 
         //таймер для синхронизации второй формы textbox c label первой формы
@@ -77,23 +81,38 @@ namespace LR_1
         #endregion
 
         // Перебор очереди 
-        private void EnumerationQueue(Queue<char> queue)
+        private string EnumerationQueue(Queue<char> queue)
         {
+            string convertBuf = null;
             foreach (var q in queue)
             {
                 convertBuf += q;
             }
 
             textBox2.Text = convertBuf;
+            return convertBuf;
+        }
+
+        private void EnumerationStack(Stack<char> stack)
+        {
+            textBox1.Text = "";
+            foreach (var s in stack)
+            {
+                textBox1.Text += s + @"
+ ";
+            }
+
+            // textBox1.Text = convertBuf;
         }
 
         //Удаляем из textbox удаленный элемент из стека
         private void StackDelete(Stack<char> stack)
         {
-            var buffText=  textBox1.Text.Remove(textBox1.Text.Length-1, 1);
+            var buffText = textBox1.Text.Remove(textBox1.Text.Length - 1, 1);
             textBox1.Clear();
             textBox1.AppendText(buffText);
         }
+
 
         // Перевод функций и цифр  в символ
         private string TranslationOfFunctions(string str)
@@ -160,7 +179,7 @@ namespace LR_1
         }
 
         //Перевод из инфиксной в постфиксную форму
-        public string Translation(string texbox)
+        public async Task<string> Translation(string texbox)
         {
             StringBuilder str = new StringBuilder();
             Stack<char> stack = new Stack<char>();
@@ -172,25 +191,18 @@ namespace LR_1
                 if (symb == '(')
                 {
                     stack.Push(symb);
-                    //Добавляем элемент стека в textbox1
-                    textBox1.AppendText(stack.Peek().ToString());
                 }
                 else if (symb == ')')
                 {
                     while (stack.Peek() != '(')
                     {
                         var buff = stack.Pop();
-                        //Метод удаления стека из текст бокса
-                        StackDelete(stack);
                         queue.Enqueue(buff);
-                        
                     }
 
                     if (stack.Peek() == '(')
                     {
                         stack.Pop();
-                        //Метод удаления стека из текст бокса
-                        StackDelete(stack);
                     }
                 }
                 else if (char.IsUpper(symb))
@@ -202,22 +214,16 @@ namespace LR_1
                     if (stack.Count == 0 || stack.Peek() == '(')
                     {
                         stack.Push(symb);
-                        //Добавляем элемент стека в textbox1
-                        textBox1.AppendText(stack.Peek().ToString());
                     }
                     else if (symb == '*' || symb == '/')
                     {
                         stack.Push(symb);
-                        //Добавляем элемент стека в textbox1
-                        textBox1.AppendText(stack.Peek().ToString());
                     }
                     else if (symb == '+' || symb == '-')
                     {
                         while (stack.Peek() != '(')
                         {
                             var buff = stack.Pop();
-                            //Метод удаления стека из текст бокса
-                            StackDelete(stack);
                             queue.Enqueue(buff);
                             if (stack.Count == 0)
                             {
@@ -226,17 +232,17 @@ namespace LR_1
                         }
 
                         stack.Push(symb);
-                        //Добавляем элемент стека в textbox1
-                        textBox1.AppendText(stack.Peek().ToString());
                     }
                 }
+
+                EnumerationQueue(queue);
+                await Task.Delay(1000);
+                EnumerationStack(stack);
             }
 
             while (stack.Count != 0)
             {
                 var buff2 = stack.Pop();
-                //Удаляем из textbox удаленный элемент из стека
-                textBox1.Text.Remove(textBox1.Text.Length - 1, 1);
                 queue.Enqueue(buff2);
                 if (stack.Count == 0)
                 {
@@ -244,9 +250,10 @@ namespace LR_1
                 }
             }
 
+            //Для вывода букв в постфиксный текст бокс
+            var convertbuf = EnumerationQueue(queue);
 
-            EnumerationQueue(queue);
-            return convertBuf;
+            return convertbuf;
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -261,46 +268,55 @@ namespace LR_1
         {
         }
 
-        private bool bolStop = false;
 
         //Стоп
         private void button3_Click(object sender, EventArgs e)
         {
-            bolStop = true;
         }
 
-        private bool bolPause = false;
 
         //Пауза
         private void button4_Click(object sender, EventArgs e)
         {
-            bolPause = true;
         }
 
         //Старт
         private void button2_Click(object sender, EventArgs e)
         {
-            while (bol)
+            if (_automatic)
             {
-                new Thread(() => { Translation(label1.Text); });
-                Translation(label1.Text);
-                if(bolStop)
-                    break;
+                Translation("2+(3+4*2)");
             }
-           
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            bol = true;
+            else if (_takt)
+            {
+                Translation("(2+(3+4))");
+            }
         }
 
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            
+            /*textBox1.TextAlign=HorizontalAlignment.Center;*/
         }
 
-      
+        public VerticalAlignment VerticalContentAlignment { get; set; }
+
+        // Потактовый режим
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            _takt = true;
+        }
+
+
+        // Автоматический режим
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            _automatic = true;
+        }
+
+
+        private void label5_Click_1(object sender, EventArgs e)
+        {
+        }
     }
 }

@@ -268,44 +268,44 @@ namespace LR_1
         }
 
         #region Курсор по textBox
+
         private void ButtonArrows()
         {
-           
             textBox1.SelectionStart = _index + 1;
             textBox1.Focus();
             _index++;
-           
         }
+
         private void button17_Click(object sender, EventArgs e)
         {
             _index = _index < textBox1.Text.Length - 1 ? ++_index : _index;
             textBox1.SelectionStart = _index + 1;
             textBox1.Focus();
-          
         }
+
         private void button15_Click_1(object sender, EventArgs e)
         {
             textBox1.SelectionStart = 0;
             textBox1.Focus();
         }
+
         private void button18_Click(object sender, EventArgs e)
         {
             textBox1.SelectionStart = textBox1.Text.Length;
             textBox1.Focus();
         }
+
         #endregion
-        
-     
+
+
         private void button20_Click(object sender, EventArgs e)
         {
-           
-           textBox1.Text= textBox1.Text.Substring(0, textBox1.Text.Length - 1); 
+            textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 1);
         }
 
         private void button19_Click(object sender, EventArgs e)
         {
             textBox1.Clear();
-            
         }
 
         // Метод реализованнй для того, чтобы при повторном открытии мастера функций не стиралась старая форма 
@@ -318,6 +318,7 @@ namespace LR_1
         }
 
         #endregion
+
         // Кнопка принять
         private void button52_Click(object sender, EventArgs e)
         {
@@ -327,7 +328,6 @@ namespace LR_1
         //Кнопка отклонить
         private void button53_Click(object sender, EventArgs e)
         {
-           
             textBox1.Clear();
             Close();
         }

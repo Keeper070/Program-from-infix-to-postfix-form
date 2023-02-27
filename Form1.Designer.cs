@@ -36,12 +36,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.timer1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,7 +53,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(228, 26);
             this.button1.TabIndex = 0;
-            this.button1.Text = "Задать";
+            this.button1.Text = "Задать строку";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -112,19 +113,9 @@
             this.label4.TabIndex = 8;
             this.label4.Text = "Стек";
             // 
-            // label5
-            // 
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(311, 165);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(228, 24);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Таблица принятия решений";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
-            // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(545, 528);
+            this.button2.Location = new System.Drawing.Point(543, 451);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(85, 30);
             this.button2.TabIndex = 11;
@@ -134,7 +125,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(363, 528);
+            this.button3.Location = new System.Drawing.Point(361, 451);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(85, 30);
             this.button3.TabIndex = 12;
@@ -144,45 +135,69 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(454, 528);
+            this.button4.Location = new System.Drawing.Point(452, 451);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(85, 30);
             this.button4.TabIndex = 13;
-            this.button4.Text = "Пауза";
+            this.button4.Text = "Такт";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // checkBox1
-            // 
-            this.checkBox1.Location = new System.Drawing.Point(7, 528);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(198, 43);
-            this.checkBox1.TabIndex = 14;
-            this.checkBox1.Text = "Пошаговый режим работы";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(136, 186);
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.textBox1.Location = new System.Drawing.Point(143, 192);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(68, 297);
+            this.textBox1.Size = new System.Drawing.Size(47, 291);
             this.textBox1.TabIndex = 15;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.Location = new System.Drawing.Point(845, 414);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(192, 43);
+            this.radioButton1.TabIndex = 16;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "Потактовый режим";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.Location = new System.Drawing.Point(845, 450);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(163, 43);
+            this.radioButton2.TabIndex = 17;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "Автоматический режим ";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            // 
+            // label5
+            // 
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label5.Location = new System.Drawing.Point(845, 383);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(172, 28);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "Режимы работы";
+            this.label5.Click += new System.EventHandler(this.label5_Click_1);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Info;
-            this.ClientSize = new System.Drawing.Size(1086, 739);
+            this.ClientSize = new System.Drawing.Size(1031, 493);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.radioButton2);
+            this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -191,21 +206,23 @@
             this.Controls.Add(this.button1);
             this.Location = new System.Drawing.Point(15, 15);
             this.Name = "Form1";
+            this.Text = "Программа преобразования инфиксного выражения в постфиксное";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.timer1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
 
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label5;
 
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton radioButton2;
+
+        private System.Windows.Forms.TextBox textBox1;
 
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
-
-        private System.Windows.Forms.Label label5;
 
         private System.Windows.Forms.Label label4;
 
