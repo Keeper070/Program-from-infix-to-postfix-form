@@ -14,13 +14,10 @@ namespace LR_1
     {
         public static string BufferTextForm1 { get; set; }
         public bool bol = false;
-
         private readonly Dictionary<char, string> _dictionaryFunction = new Dictionary<char, string>();
         public Dictionary<char, string> dictionaryDigit = new Dictionary<char, string>();
         private bool _automatic = false;
         private bool _takt = false;
-        public HorizontalAlignment TextAlign { get; set; }
-        public VerticalAlignment TextVerticalAlignment { get; set; }
 
         public Form1()
         {
@@ -101,7 +98,6 @@ namespace LR_1
                 textBox1.Text += s + @"
  ";
             }
-
             // textBox1.Text = convertBuf;
         }
 
@@ -177,7 +173,8 @@ namespace LR_1
 
             return outStr.ToString();
         }
-
+        
+        char symbBuf;
         //Перевод из инфиксной в постфиксную форму
         public async Task<string> Translation(string texbox)
         {
@@ -186,8 +183,12 @@ namespace LR_1
             Queue<char> queue = new Queue<char>();
 
             texbox = TranslationOfFunctions(texbox);
-            foreach (var symb in texbox)
+            label7.Text = texbox;
+            await Task.Delay(1000);
+
+            for (var index = 0; index < texbox.Length; index++)
             {
+                var symb = texbox[index];
                 if (symb == '(')
                 {
                     stack.Push(symb);
@@ -197,12 +198,16 @@ namespace LR_1
                     while (stack.Peek() != '(')
                     {
                         var buff = stack.Pop();
+                        EnumerationStack(stack);
+                        await Task.Delay(1000);
                         queue.Enqueue(buff);
                     }
 
                     if (stack.Peek() == '(')
                     {
                         stack.Pop();
+                        EnumerationStack(stack);
+                        await Task.Delay(1000);
                     }
                 }
                 else if (char.IsUpper(symb))
@@ -224,6 +229,8 @@ namespace LR_1
                         while (stack.Peek() != '(')
                         {
                             var buff = stack.Pop();
+                            EnumerationStack(stack);
+                            await Task.Delay(1000);
                             queue.Enqueue(buff);
                             if (stack.Count == 0)
                             {
@@ -236,13 +243,16 @@ namespace LR_1
                 }
 
                 EnumerationQueue(queue);
-                await Task.Delay(1000);
                 EnumerationStack(stack);
+                await Task.Delay(1000);
+
             }
 
             while (stack.Count != 0)
             {
                 var buff2 = stack.Pop();
+                EnumerationStack(stack);
+                await Task.Delay(3000);
                 queue.Enqueue(buff2);
                 if (stack.Count == 0)
                 {
@@ -281,25 +291,22 @@ namespace LR_1
         }
 
         //Старт
-        private void button2_Click(object sender, EventArgs e)
+        private async void button2_Click(object sender, EventArgs e)
         {
             if (_automatic)
             {
-                Translation("2+(3+4*2)");
+                await Translation(label1.Text);
             }
             else if (_takt)
             {
-                Translation("(2+(3+4))");
+                await Translation(label1.Text);
             }
         }
 
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            /*textBox1.TextAlign=HorizontalAlignment.Center;*/
         }
-
-        public VerticalAlignment VerticalContentAlignment { get; set; }
 
         // Потактовый режим
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
@@ -317,6 +324,26 @@ namespace LR_1
 
         private void label5_Click_1(object sender, EventArgs e)
         {
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        //Кнопка очистки
+        private void button5_Click(object sender, EventArgs e)
+        {
+            label1.Text = "";
+            label7.Text = "";
+            label8.Text = "";
+            textBox2.Clear();
+            textBox1.Clear();
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
