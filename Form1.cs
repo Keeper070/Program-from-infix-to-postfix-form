@@ -18,14 +18,9 @@ namespace LR_1
         public Dictionary<char, string> dictionaryDigit = new Dictionary<char, string>();
         private bool _automatic = false;
         private bool _takt = false;
-     
-        //для такта
-        public int intBuf=0;
-        private string textboxBuff;
-        private Queue<char> queueBuff;
-        private Stack<char> stackBuff;
+
         //
-        
+
         public Form1()
         {
             InitializeComponent();
@@ -172,15 +167,21 @@ namespace LR_1
             return outStr.ToString();
         }
 
-        private TextBox texbox2Buff;
-        private TextBox texbox1Buff;
+
+        //для такта
+        public int intBuf = 0;
+        private string textboxBuff;
+        private Queue<char> queueBuff = new Queue<char>();
+        private Stack<char> stackBuff = new Stack<char>();
+
+        private bool end;
         //Перевод из инфиксной в постфиксную форму
         public async Task<string> Translation(string texbox)
         {
             StringBuilder str = new StringBuilder();
             Stack<char> stack = new Stack<char>();
             Queue<char> queue = new Queue<char>();
-            
+
             if (intBuf == 0)
             {
                 texbox = TranslationOfFunctions(texbox);
@@ -189,14 +190,13 @@ namespace LR_1
             else
             {
                 texbox = textboxBuff;
-                textBox2 = texbox2Buff;
-                textBox1 = texbox1Buff;
-
+                queue = queueBuff;
+                stack = stackBuff;
             }
-            
+
             label7.Text = texbox;
             await Task.Delay(1000);
-            
+
             for (var index = intBuf; index < texbox.Length; index++)
             {
                 var symb = texbox[index];
@@ -263,7 +263,8 @@ namespace LR_1
                 }
             }
 
-            while (stack.Count != 0)
+            end = texbox.Length == intBuf;
+            while (stack.Count != 0 && end)
             {
                 var buff2 = stack.Pop();
                 EnumerationStack(stack);
@@ -275,8 +276,20 @@ namespace LR_1
                 }
             }
 
-            texbox2Buff = textBox2;
-            texbox1Buff = textBox1;
+            if ((stack.Count != 0 || queue.Count != 0) && _takt)
+            {
+                stackBuff = stack;
+                queueBuff = queue;
+            }
+ 
+            if (end)
+            {
+                intBuf = 0;
+                stackBuff = new Stack<char>();
+                queueBuff = new Queue<char>();
+            }
+
+
             //Для вывода букв в постфиксный текст бокс
             var convertbuf = EnumerationQueue(queue);
 
@@ -347,7 +360,6 @@ namespace LR_1
 
         private void label2_Click(object sender, EventArgs e)
         {
-            
         }
 
         //Кнопка очистки
@@ -361,7 +373,6 @@ namespace LR_1
 
         private void label7_Click(object sender, EventArgs e)
         {
-            
         }
     }
 }
